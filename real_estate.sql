@@ -65,11 +65,12 @@ values (2018),
        (2021),
        (2022);
 
+
 -- insert fha_avg_interest
 insert into fha_avg_interest (year_id,interest_rate)
 values (1,4.471869205099044),
 	   (2,4.374229740564477),
-       (3,4.374229740564477),
+       (3,3.430573344487415),
        (4,3.1106115082218513),
        (5,4.80621418096669);
 
@@ -108,3 +109,28 @@ select * from fha_avg_interest;
 select * from fha_avg_mortgage; -- inserted using table import from file avg_interest.json
 
 select * from cdbg_grant;-- inserted using table import from file il_cdbg.csv
+
+-- get table similar to DF on Python
+select county_name,year, extremely_low, low, very_low, value as CDBG_granted
+from cdbg_grant as cd
+join counties as c
+on cd.county_id=c.county_id
+join year as y
+on cd.year_id=y.year_id
+order by county_name,year;
+
+/*select *
+from cdbg_grant as cd
+join counties as c
+on cd.county_id=c.county_id
+join year as y
+on cd.year_id=y.year_id;*/
+
+-- get table similar to DF on Python
+select y.year,i.interest_rate,m.mortgage_amount
+from fha_avg_interest as i
+join fha_avg_mortgage as m
+on i.year_id=m.year_id
+join year as y
+on i.year_id=y.year_id
+order by y.year;
